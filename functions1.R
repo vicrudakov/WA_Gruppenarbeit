@@ -1,4 +1,5 @@
 source("functions2.R") # Helfer-Funktionen
+library(ggplot2) # fuer Funktion (f)
 
 
 # a) Eine Funktion, die verschiedene geeignete deskriptive Statistiken
@@ -72,6 +73,26 @@ deskr_biv <- function(daten_metr, daten_dich) {
 # kategorisiert (z.B. in „niedrig“, „mittel“, „hoch“)
 
 
-# f) Eine Funktion, die eine geeignete Visualisierung von drei oder vier 
-# kategorialen Variablen erstellt
+# f)
+
+# kat_vis - gibt ein Balkendiagramm zurueck, das die absolute Haeufigkeiten von
+#           kategorialen Variablen veranschaulicht
+#
+# Input:  daten - Vektor mit mehreren kategorialen Variablen
+# 
+# Output: Grafik (intern als eine Liste)
+
+kat_vis <- function(daten) {
+  require(ggplot2)
+  
+  stopifnot(is.vector(daten),
+            !is.na(daten),
+            length(unique(daten)) > 1)
+  
+  df <- data.frame(table(daten))
+
+  plot1 <- balkendiagramm(x = df$daten, y = df$Freq)
+  
+  return(plot1)
+}
 
