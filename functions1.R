@@ -13,59 +13,57 @@ source("functions2.R") # Helfer-Funktionen
 # Zusammenhang zwischen zwei kategorialen Variablen berechnet ausgibt
 
 
-# d) Eine Funktion, die geeignete deskriptive bivariate Statistiken für den
-# Zusammengang zwischen einer metrischen und einer dichotomen Variablen 
-# berechnet und ausgibt
+# d)
 
-# deskr.biv - gibt deskriptive bivariate Statistiken für den Zusammengang
+# deskr_biv - gibt deskriptive bivariate Statistiken für den Zusammengang
 #             zwischen einer metrischen und einer dichotomen Variablen zurueck
 #
-# Input:  daten.metr - Vektor mit metrischen Variablen
-#         daten.dich - Vektor mit dichotomen Variablen
+# Input:  daten_metr - Vektor mit metrischen Variablen
+#         daten_dich - Vektor mit dichotomen Variablen
 # 
 # Output: eine benannte Liste:
 #         kor - Korrelation, liegt in [0, 1]
-#         kont.tafel - Kontingenztafel
+#         kont_tafel - Kontingenztafel
 #         phi - Phi-Koeffizient, normiert, liegt in [0, 1]
-#         cramers.kont - Cramers Kontingenzmass, liegt in [0, 1]
-#         korr.pearson.kont - korrigiertes Kontingenzmaß von Pearson, in [0, 1]
+#         cramers_kont - Cramers Kontingenzmass, liegt in [0, 1]
+#         korr_pearson_kont - korrigiertes Kontingenzmaß von Pearson, in [0, 1]
 
-deskr.biv <- function(daten.metr, daten.dich) {
-  stopifnot(is.vector(daten.metr), is.vector(daten.dich),
-            is.numeric(daten.metr),
-            length(unique(daten.dich)) == 2,
-            !is.na(daten.metr), !is.na(daten.dich))
+deskr_biv <- function(daten_metr, daten_dich) {
+  stopifnot(is.vector(daten_metr), is.vector(daten_dich),
+            is.numeric(daten_metr),
+            length(unique(daten_dich)) == 2,
+            !is.na(daten_metr), !is.na(daten_dich))
   
-  kor <- cor(daten.metr, daten.dich)
+  kor <- cor(daten_metr, daten_dich)
   
   # bedingte Haeufigkeitstabelle wie data.frame
-  tab <- table(daten.metr, daten.dich)
+  tab <- table(daten_metr, daten_dich)
   df <- data.frame(rownames(tab), tab[, 1], tab[, 2])
-  colnames(df) <- c("daten.metr", unique(daten.dich)[1], unique(daten.dich)[2])
+  colnames(df) <- c("daten_metr", unique(daten_dich)[1], unique(daten_dich)[2])
   
-  kont.tafel <- cbind(df, rowSums(tab))
-  kont.tafel <- rbind(kont.tafel, c("Summe", colSums(tab), sum(rowSums(tab))))
-  colnames(kont.tafel)[4] <- "Summe"
+  kont_tafel <- cbind(df, rowSums(tab))
+  kont_tafel <- rbind(kont_tafel, c("Summe", colSums(tab), sum(rowSums(tab))))
+  colnames(kont_tafel)[4] <- "Summe"
   
   # quadratische Kontingenz
-  n <- as.numeric(kont.tafel[nrow(kont.tafel), 4])
-  H.i.1 <- as.numeric(kont.tafel[1:(nrow(kont.tafel) - 1), 4]) *
-    as.numeric(kont.tafel[nrow(kont.tafel), 2]) / n
-  H.i.2 <- as.numeric(kont.tafel[1:(nrow(kont.tafel) - 1), 4]) *
-    as.numeric(kont.tafel[nrow(kont.tafel), 3]) / n
-  H.1 <- (as.numeric(kont.tafel[1:(nrow(kont.tafel) - 1), 2]) - H.i.1)^2 / H.i.1
-  H.2 <- (as.numeric(kont.tafel[1:(nrow(kont.tafel) - 1), 3]) - H.i.2)^2 / H.i.2
-  chi.q <- sum(H.1, H.2)
+  n <- as.numeric(kont_tafel[nrow(kont_tafel), 4])
+  H_i_1 <- as.numeric(kont_tafel[1:(nrow(kont_tafel) - 1), 4]) *
+    as.numeric(kont_tafel[nrow(kont_tafel), 2]) / n
+  H_i_2 <- as.numeric(kont_tafel[1:(nrow(kont_tafel) - 1), 4]) *
+    as.numeric(kont_tafel[nrow(kont_tafel), 3]) / n
+  H_1 <- (as.numeric(kont_tafel[1:(nrow(kont_tafel) - 1), 2]) - H_i_1)^2 / H_i_1
+  H_2 <- (as.numeric(kont_tafel[1:(nrow(kont_tafel) - 1), 3]) - H_i_2)^2 / H_i_2
+  chi_q <- sum(H_1, H_2)
   
-  phi <- sqrt(chi.q / n)
+  phi <- sqrt(chi_q / n)
   
   # min(k, l) = 2 <=> dichotome Variable
-  cramers.kont <- sqrt(chi.q / n)
+  cramers_kont <- sqrt(chi_q / n)
   
-  korr.pearson.kont <- sqrt(chi.q / (chi.q + n)) * sqrt(2)
+  korr_pearson_kont <- sqrt(chi_q / (chi_q + n)) * sqrt(2)
   
-  li <- list(kor = kor, kont.tafel = kont.tafel, phi = phi, 
-             cramers.kont = cramers.kont, korr.pearson.kont = korr.pearson.kont)
+  li <- list(kor = kor, kont_tafel = kont_tafel, phi = phi, 
+             cramers_kont = cramers_kont, korr_pearson_kont = korr_pearson_kont)
   return(li)
 }
 
