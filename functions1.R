@@ -44,29 +44,28 @@ deskr_metr <- function(x){
   ))
 }
 
-# b) Eine Funktion, die verschiedene geeignete deskriptive Statistiken für
-# kategoriale Variablen berechnet und ausgibt
+# b)
 
-# deskr.kat - gibt Modus/Modi und Haeufigkeitstabelle von Vektor mit kategoriale 
+# deskr_kat - gibt Modus/Modi und Haeufigkeitstabelle von Vektor mit kategoriale 
 #             Merkmalen zurueck
 #
 # Input:  daten - Vektor mit kategoriale Merkmalen
 # 
 # Output: eine benannte Liste:
-#         haeuf.tab - eine Haeufigkeitstabelle
+#         haeuf_tab - eine Haeufigkeitstabelle
 #         modus - Modus/Modi von Vektor
 
-deskr.kat <- function(daten) {
+deskr_kat <- function(daten) {
   stopifnot(is.vector(daten),
             !is.na(daten))
   
-  df.daten <- data.frame(table(daten))
-  df.daten <- cbind(df.daten, df.daten[, 2] / sum(df.daten[, 2]))
-  colnames(df.daten) <- c("daten", "abs.haeuf", "rel.haeuf")
+  df_daten <- data.frame(table(daten))
+  df_daten <- cbind(df_daten, df_daten[, 2] / sum(df_daten[, 2]))
+  colnames(df_daten) <- c("daten", "abs_haeuf", "rel_haeuf")
   
-  modus <- as.vector(df.daten[which(df.daten[, 2] == max(df.daten[, 2])), 1])
+  modus <- as.vector(df_daten[which(df_daten[, 2] == max(df_daten[, 2])), 1])
   
-  li <- list(haeuf.tab = df.daten, modus = modus)
+  li <- list(haeuf_tab = df_daten, modus = modus)
   return(li)
 }
 
