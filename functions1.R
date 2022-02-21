@@ -1,7 +1,6 @@
 source("functions2.R") # Helfer-Funktionen
 
 
-<<<<<<< Updated upstream
 # a) Eine Funktion, die verschiedene geeignete deskriptive Statistiken
 # für metrische Variablen berechnet und ausgibt
 
@@ -31,11 +30,6 @@ deskr.kat <- function(daten) {
   li <- list(haeuf.tab = df.daten, modus = modus)
   return(li)
 }
-=======
-# a) 
-
-
->>>>>>> Stashed changes
 
 
 # c) Eine Funktion, die geeignete deskriptive bivariate Statistiken für den
