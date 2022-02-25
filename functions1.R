@@ -45,6 +45,7 @@ deskr_metr <- function(x){
   ))
 }
 
+
 # b)
 
 # deskr_kat - gibt Modus/Modi und Haeufigkeitstabelle von Vektor mit kategoriale 
@@ -71,8 +72,55 @@ deskr_kat <- function(daten) {
 }
 
 
-# c) Eine Funktion, die geeignete deskriptive bivariate Statistiken fuer den
-# Zusammenhang zwischen zwei kategorialen Variablen berechnet ausgibt
+# c)
+
+# zshg_deskr_kat - Eine Funktion, die geeignete deskriptive bivariate Statistiken 
+#                 für den Zusammenhang zwischen zwei kategorialen Variablen 
+#                 berechnet ausgibt
+# Input: x - der Vektor mit Merkmalauspraegungen eines kategoriales Merkmals
+#        y - der Vektor mit Merkmalauspraegungen eines kategoriales Merkmals
+# Output: eine bennante Liste der briviate Statistiken, die Funktion zurueckgibt:
+#          -"Chi^2" - eine Zahl, quadratische Kontingenz,
+#               Chi^2 = sum l(sum k(hfgt[i,j]^2 / rand_x[i] * rand_y[j]))
+#          -"Pearson's Kontingenzmass" - eine Zahll, Kontingenzkoeffizient nach 
+#           Pearson
+#                Kp = sqrt(chi2 / (chi2 + n))
+
+
+zshg_deskr_kat <- function(x, y) {
+  #Anzahl der Antworten
+  n <- length(x)
+  
+  #Zweidimensionale Haeufigkeitsverteilung
+  hfkt <- table(x,y)
+  
+  #Anzahl moeglicher Merkmalauspraegungen
+  l <- length(unique(y))
+  k <- length(unique(x))
+  
+  #Speichern von Randverteilung von X und Y
+  rand_x <- randvert(hfkt, 1)
+  rand_y <- randvert(hfkt, 2)
+  names(rand_x) <- NULL
+  names(rand_y) <- NULL
+  
+  #Berechnen von quadratischer Kontingenz chi^2
+  chi2 <- 0
+  for(i in 1:k){
+    for(j in 1:l){
+      temp <- (hfkt[i, j]^2)
+      temp <- temp / (rand_x[i] * rand_y[j])
+      chi2 <- chi2 + temp
+    }
+  }
+  chi2 <- (chi2 - 1) * n
+  
+  #Berechnen von Pearson's Kontingenzmass
+  pearson_koef <- sqrt(chi2 / (chi2 + n))
+  
+  return(list("Chi^2" = chi2,
+              "Pearson's Kontingenzmass" = pearson_koef))
+}
 
 
 # d)
@@ -131,6 +179,7 @@ deskr_biv <- function(daten_metr, daten_dich) {
 
 
 # e) 
+
 # quant_kat_ord <- eine Funktion, die eine mindestens ordinal skalierte
 # Variable quantilbasiert kategorisiert und kategorisierte Werte und 
 # Verteilung von Kategorien zurueckgibt.
@@ -156,12 +205,12 @@ deskr_biv <- function(daten_metr, daten_dich) {
 #  Verteilung - ein Object der Klasse table; die Haeufigkeitstabelle der 
 #               verteilung von der zugeordneten Kategorien
 #
-# Kommentar: in default Fall werden die Daten quartilbasiert kategorisiert,
+#  Kommentar: in default Fall werden die Daten quartilbasiert kategorisiert,
 #            also die Werte zwischen 1. und 3.Quartil werden Kategorie "mittel"
 #            zugeordnet
 
 quant_kat_ord <- function(x, prob = c(0.25, 0.75),
-                          kat = c("niedrig", "mittel", "hoch")){
+                          kat = c("niedrig", "mittel", "hoch")) {
   #Sicherheit-Check:
   stopifnot( is.vector(x), !is.na(x) )
   
@@ -215,4 +264,3 @@ kat_vis <- function(daten) {
   
   return(plot1)
 }
-
