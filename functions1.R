@@ -4,6 +4,72 @@ library(ggplot2) # fuer Funktion (f)
 
 # a) 
 
+# deskr_metr - eine Funktion, die verschiedene geeignete deskriptive 
+#              Statistiken für metrische Variablen berechnet und ausgibt. 
+#              Die Statistiken sind in Output aufgezaehlt. 
+
+# Input: x - der Vektor mit Merkmalauspraegungen eines quantitatives Merkmals,
+#            der metrische Skala verwendet.
+# Output: eine bennante Liste der Statistiken, die Funktion zurueckgibt:
+#          -"Mittelwert" - eine Zahl, Mittelwert,
+#          -"Median" - eine Zahl, der Median
+#          -"Quartile" - ein 2-elementiger num. Vektor, 0.25- und 0.75-Quantile
+#          -"Extrempunkte" - ein 2-elementiger num. Vektor, Minimum und Maximum
+#          -"Quartilabstand" - eine Zahl, Quartilabstand
+#          -"MQA" - eine Zahl, mittl. quadratische Abweichung s^2,
+#               s^2 = (1/n) * sum((x[i] − mean(x))^2)
+#          -"Variationskoeffizient" - eine Zahl, Variationskoeffizient,
+#               Dispersionsmass,  v = s/mean(x)
+
+deskr_metr <- function(x){
+  
+  #Sicherheits-Check
+  stopifnot(is.vector(x), !is.na(x))
+  #Laenge des Datensatzes
+  n = length(x)
+  
+  quant <- quantile(x, c(0.25, 0.5, 0.75))
+  
+  q_abst <- quant[3] - quant[1]
+  names(q_abst) <- NULL
+  
+  mqa <- sum((x - mean(x))^2) / n
+  
+  return(list("Mittelwert" = mean(x),
+              "Median" = quant[2],
+              "Quartile" = quant[-2],
+              "Extrempunkte" = range(x),
+              "Quartilabstand" = q_abst,
+              "MQA" = mqa,
+              "Variationskoeffizient" = (sqrt(mqa) / mean(x))
+  ))
+}
+
+# b)
+
+# deskr_kat - gibt Modus/Modi und Haeufigkeitstabelle von Vektor mit kategoriale 
+#             Merkmalen zurueck
+#
+# Input:  daten - Vektor mit kategoriale Merkmalen
+# 
+# Output: eine benannte Liste:
+#         haeuf_tab - eine Haeufigkeitstabelle
+#         modus - Modus/Modi von Vektor
+
+deskr_kat <- function(daten) {
+  stopifnot(is.vector(daten),
+            !is.na(daten))
+  
+  df_daten <- data.frame(table(daten))
+  df_daten <- cbind(df_daten, df_daten[, 2] / sum(df_daten[, 2]))
+  colnames(df_daten) <- c("daten", "abs_haeuf", "rel_haeuf")
+  
+  modus <- as.vector(df_daten[which(df_daten[, 2] == max(df_daten[, 2])), 1])
+  
+  li <- list(haeuf_tab = df_daten, modus = modus)
+  return(li)
+}
+
 # deskr_metr - eine Funktion, die mehrere deskriptive Statistiken
 #              fuer metrische Variablen berechnet und ausgibt. 
 #              Die Statistiken sind in Output aufgezaehlt. 
