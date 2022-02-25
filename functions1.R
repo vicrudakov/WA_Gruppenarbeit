@@ -130,9 +130,68 @@ deskr_biv <- function(daten_metr, daten_dich) {
 }
 
 
-# e) Eine Funktion, die eine mindestens ordinal skalierte Variable quantilbasiert
-# kategorisiert (z.B. in „niedrig“, „mittel“, „hoch“)
+# e) 
+# quant_kat_ord <- eine Funktion, die eine mindestens ordinal skalierte
+# Variable quantilbasiert kategorisiert und kategorisierte Werte und 
+# Verteilung von Kategorien zurueckgibt.
+#
+# Input:
+#  x - ein numerischer Vektor; Werte einer mindestens ordinal skalierten 
+#      Variable
+#  prob - ein numerischer Vektor; die Wahrscheinlichkeiten fuer die Quantilen, 
+#          die von der Interesse sind, default = c(0.25, 0.75)
+#  kat - ein character- oder String-Vektor; die Namen fuer Kategorien: wenn der 
+#        Wert von x[j] zwischen den Quantilen fuer die Wahrscheinlichkeiten
+#        prob[i] und prob[i+1] liegt, er wird zur Kategorie kat[i+1] zugeordnet,
+#        i = 1, ..., m - 1, wobei m - Anzahl der Kategorien,
+#        j = 1, ..., n, wobei n - Anzahl der Beobachtungen
+#        die Werte x[j] < quantile(prob[1]) werden Kategorie kat[1] zugeordnet;
+#        default: kat = c("niegrig", "mittel", "hoch")
+#
+# Output:  eine bennante Liste mit Elementen
+#  Kategorisiert - ein character- oder String-Vektor;
+#                  der Vektor der jeder Beobachtung zugeordneten Kategorien
+#  Quantilen - eine Matrix mit 2 Zeilen; die W'keiten und dafuer berechnete
+#              Quantilen
+#  Verteilung - ein Object der Klasse table; die Haeufigkeitstabelle der 
+#               verteilung von der zugeordneten Kategorien
+#
+# Kommentar: in default Fall werden die Daten quartilbasiert kategorisiert,
+#            also die Werte zwischen 1. und 3.Quartil werden Kategorie "mittel"
+#            zugeordnet
 
+quant_kat_ord <- function(x, prob = c(0.25, 0.75),
+                          kat = c("niedrig", "mittel", "hoch")){
+  #Sicherheit-Check:
+  stopifnot( is.vector(x), !is.na(x) )
+  
+  if( !is.numeric(x) )
+    stop("Convert data to the numeric vector and try again")
+  
+  if( length(kat) != length(prob) + 1 )
+    stop("Need more names for the categories")
+  
+  categories <- numeric(length(x))
+  
+  q <- quantile(x, prob)
+  
+  #Wenn 2 berechnete Quantile gleich sind, ist solche Kategorisation ist
+  #nicht ganz sinnvoll, darum wird eine warnung-Befehl geworfen, die 
+  #Kategorisation wird trotzdem durchgefuehrt
+  
+  if( length(unique(q)) != length(q) )
+    warning("These quantiles are not really useful for the data")
+  
+  for( i in 1:length(q) ){
+    categories[x >= q[i]] <- kat[i + 1]
+  }
+  
+  categories[categories == "0"] <- kat[1]
+  
+  return( list(Kategorisiert = categories,
+               Quantilen = q,
+               Verteilung = table(categories)[kat]) )
+}
 
 # f)
 
