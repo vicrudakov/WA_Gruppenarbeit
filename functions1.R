@@ -9,7 +9,7 @@ library(ggplot2) # fuer Funktion (f)
 #              Die Statistiken sind in Output aufgezaehlt. 
 # Input: x - der Vektor mit Merkmalauspraegungen eines quantitatives Merkmals,
 #            der metrische Skala verwendet.
-# Output: eine bennante Liste der Statistiken, die Funktion zurueckgibt:
+# Output: eine benannte Liste der Statistiken, die Funktion zurueckgibt:
 #          -Mittelwert - eine Zahl, Mittelwert,
 #          -Median - eine Zahl, der Median
 #          -Quartile - ein 2-elementiger num. Vektor, 0.25- und 0.75-Quantile
@@ -77,12 +77,11 @@ deskr_kat <- function(daten) {
 #                 berechnet ausgibt
 # Input: x - der Vektor mit Merkmalauspraegungen eines kategoriales Merkmals
 #        y - der Vektor mit Merkmalauspraegungen eines kategoriales Merkmals
-# Output: eine bennante Liste der briviate Statistiken, die Funktion zurueckgibt:
-#          -"Chi^2" - eine Zahl, quadratische Kontingenz,
-#               Chi^2 = sum l(sum k(hfgt[i,j]^2 / rand_x[i] * rand_y[j]))
-#          -"Pearson's Kontingenzmass" - eine Zahll, Kontingenzkoeffizient nach 
-#           Pearson
-#                Kp = sqrt(chi2 / (chi2 + n))
+# Output: eine benannte Liste der briviate Statistiken, die Funktion zurueckgibt:
+#          -Phi - Phi-Koeffizient, liegt in [0, sqrt(min(k, l) - 1), k und l - 
+#           Laenge von x und y
+#          -Korr_Pearson - eine Zahl, Kontingenzkoeffizient nach Pearson
+#                Kp = sqrt(chi2 / (chi2 + n)) * sqrt(min(l, k) / (min(l, k) - 1))
 
 
 zshg_deskr_kat <- function(x, y) {
@@ -112,10 +111,12 @@ zshg_deskr_kat <- function(x, y) {
     }
   }
   chi2 <- (chi2 - 1) * n
+  phi <- sqrt(chi2 / n)
   
   #Berechnen von Pearson's Kontingenzmass
   pearson_koef <- sqrt(chi2 / (chi2 + n))
-  korr_pearson_koef <- sqrt(chi2 / (chi2 + n)) * sqrt(2)
+  korr_pearson_koef <- sqrt(chi2 / (chi2 + n)) *
+    sqrt(min(l, k) / (min(l, k) - 1))
   
   return(list(Phi = phi,
               Korr_Pearson = korr_pearson_koef))
@@ -134,7 +135,7 @@ zshg_deskr_kat <- function(x, y) {
 # Output: eine benannte Liste:
 #         kor - Korrelation, liegt in [0, 1]
 #         kont_tafel - Kontingenztafel
-#         phi - Phi-Koeffizient, normiert, liegt in [0, 1]
+#         phi - Phi-Koeffizient, in diesem Fall normiert, liegt in [0, 1]
 #         cramers_kont - Cramers Kontingenzmass, liegt in [0, 1]
 #         korr_pearson_kont - korrigiertes Kontingenzmass von Pearson, in [0, 1]
 
@@ -197,7 +198,7 @@ deskr_biv <- function(daten_metr, daten_dich) {
 #        die Werte x[j] < quantile(prob[1]) werden Kategorie kat[1] zugeordnet;
 #        default: kat = c("niegrig", "mittel", "hoch")
 #
-# Output:  eine bennante Liste mit Elementen
+# Output:  eine benannte Liste mit Elementen
 #  Kategorisiert - ein character- oder String-Vektor;
 #                  der Vektor der jeder Beobachtung zugeordneten Kategorien
 #  Quantilen - eine Matrix mit 2 Zeilen; die W'keiten und dafuer berechnete
