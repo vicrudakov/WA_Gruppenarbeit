@@ -13,7 +13,7 @@ balkendiagramm <- function(x, y) {
   plot1 <- ggplot(df, aes(x = Variablen, y = Haeufigkeit)) + 
     geom_bar(stat = "identity", width = 0.5,
              fill = "steelblue", color = "black") +
-    geom_text(aes(label = Variablen), vjust = -0.5) +
+    geom_text(aes(label = Haeufigkeit), vjust = -0.5) +
     ylim(0, 1.1 * max(df$Haeufigkeit)) +
     theme(axis.title = element_text(size = 13),
           axis.text = element_text(size = 13), 
@@ -21,4 +21,15 @@ balkendiagramm <- function(x, y) {
           axis.title.y = element_text(margin = margin(0, 20, 0, 0)))
   
   return(plot1)
+}
+
+# randvert - gibt Zeilen- oder Spaltensumme zurueck
+#
+# Input: t - eine Tabelle mit Zahlen
+# dim - 1 - Zeilen, 2 - Spalten
+#
+# Output: Zeilen- oder Spaltensumme
+
+randvert <- function(t, dim){
+  return(apply(t, dim, sum))
 }
