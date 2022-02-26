@@ -115,9 +115,10 @@ zshg_deskr_kat <- function(x, y) {
   
   #Berechnen von Pearson's Kontingenzmass
   pearson_koef <- sqrt(chi2 / (chi2 + n))
+  korr_pearson_koef <- sqrt(chi2 / (chi2 + n)) * sqrt(2)
   
-  return(list("Chi^2" = chi2,
-              "Pearson's Kontingenzmass" = pearson_koef))
+  return(list(Phi = phi,
+              Korr_Pearson = korr_pearson_koef))
 }
 
 
