@@ -5,20 +5,20 @@ library(ggplot2) # fuer Funktion (f)
 # a) 
 
 # deskr_metr - eine Funktion, die verschiedene geeignete deskriptive 
-#              Statistiken für metrische Variablen berechnet und ausgibt. 
+#              Statistiken fuer metrische Variablen berechnet und ausgibt. 
 #              Die Statistiken sind in Output aufgezaehlt. 
 
 # Input: x - der Vektor mit Merkmalauspraegungen eines quantitatives Merkmals,
 #            der metrische Skala verwendet.
 # Output: eine bennante Liste der Statistiken, die Funktion zurueckgibt:
-#          -"Mittelwert" - eine Zahl, Mittelwert,
-#          -"Median" - eine Zahl, der Median
-#          -"Quartile" - ein 2-elementiger num. Vektor, 0.25- und 0.75-Quantile
-#          -"Extrempunkte" - ein 2-elementiger num. Vektor, Minimum und Maximum
-#          -"Quartilabstand" - eine Zahl, Quartilabstand
-#          -"MQA" - eine Zahl, mittl. quadratische Abweichung s^2,
+#          -Mittelwert - eine Zahl, Mittelwert,
+#          -Median - eine Zahl, der Median
+#          -Quartile - ein 2-elementiger num. Vektor, 0.25- und 0.75-Quantile
+#          -Extrempunkte - ein 2-elementiger num. Vektor, Minimum und Maximum
+#          -Quartilabstand - eine Zahl, Quartilabstand
+#          -MQA - eine Zahl, mittl. quadratische Abweichung s^2,
 #               s^2 = (1/n) * sum((x[i] − mean(x))^2)
-#          -"Variationskoeffizient" - eine Zahl, Variationskoeffizient,
+#          -Variationskoeffizient - eine Zahl, Variationskoeffizient,
 #               Dispersionsmass,  v = s/mean(x)
 
 deskr_metr <- function(x){
@@ -35,13 +35,13 @@ deskr_metr <- function(x){
   
   mqa <- sum((x - mean(x))^2) / n
   
-  return(list("Mittelwert" = mean(x),
-              "Median" = quant[2],
-              "Quartile" = quant[-2],
-              "Extrempunkte" = range(x),
-              "Quartilabstand" = q_abst,
-              "MQA" = mqa,
-              "Variationskoeffizient" = (sqrt(mqa) / mean(x))
+  return(list(Mittelwert = mean(x),
+              Median = quant[2],
+              Quartile = quant[-2],
+              Extrempunkte = range(x),
+              Quartilabstand = q_abst,
+              MQA = mqa,
+              Variationskoeffizient = (sqrt(mqa) / mean(x))
   ))
 }
 
@@ -119,6 +119,7 @@ zshg_deskr_kat <- function(x, y) {
   return(list("Chi^2" = chi2,
               "Pearson's Kontingenzmass" = pearson_koef))
 }
+
 
 
 # d)
@@ -205,7 +206,8 @@ deskr_biv <- function(daten_metr, daten_dich) {
 #
 #  Kommentar: in default Fall werden die Daten quartilbasiert kategorisiert,
 #            also die Werte zwischen 1. und 3.Quartil werden Kategorie "mittel"
-#            zugeordnet
+#            zugeordnet, die Werte kleiner 1.Quartil der Kategorie "niedrig",
+#            die Werte groesser 3.Quartil der Kategorie "hoch" zugeordnet.
 
 quant_kat_ord <- function(x, prob = c(0.25, 0.75),
                           kat = c("niedrig", "mittel", "hoch")) {
