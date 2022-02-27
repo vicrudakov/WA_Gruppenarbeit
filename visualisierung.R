@@ -73,6 +73,32 @@ zshg_deskr_kat(Interesse_Mathe_Kat$Kategorisiert, Studiengang)
 # $Korr_Pearson
 # [1] 0.7415369
 
+## Genaue Zahlen anhand von Studiengang
+Interesse_Mathe_Statistik <- daten[daten$Studiengang == "Statistik", ]$Interesse_Mathe
+deskr_metr(Interesse_Mathe_Statistik)
+# $Mittelwert
+# [1] 4.8
+# 
+# $Median
+# 50% 
+#   5 
+Interesse_Mathe_DS <- daten[daten$Studiengang == "Data Science", ]$Interesse_Mathe
+deskr_metr(Interesse_Mathe_DS)
+# $Mittelwert
+# [1] 4.272727
+# 
+# $Median
+# 50% 
+#   4 
+Interesse_Mathe_Informatik <- daten[daten$Studiengang == "Informatik", ]$Interesse_Mathe
+deskr_metr(Interesse_Mathe_Informatik)
+# $Mittelwert
+# [1] 3.347826
+# 
+# $Median
+# 50% 
+#   4 
+
 
 ### Interesse_Progr
 ## Kategorisierung
@@ -84,6 +110,32 @@ zshg_deskr_kat(Interesse_Progr_Kat$Kategorisiert, Studiengang)
 # 
 # $Korr_Pearson
 # [1] 0.7061127
+
+## Genaue Zahlen anhand von Studiengang
+Interesse_Progr_Statistik <- daten[daten$Studiengang == "Statistik", ]$Interesse_Progr
+deskr_metr(Interesse_Progr_Statistik)
+# $Mittelwert
+# [1] 2.942857
+# 
+# $Median
+# 50% 
+#   3 
+Interesse_Progr_DS <- daten[daten$Studiengang == "Data Science", ]$Interesse_Progr
+deskr_metr(Interesse_Progr_DS)
+# $Mittelwert
+# [1] 5.939394
+# 
+# $Median
+# 50% 
+#   6 
+Interesse_Progr_Informatik <- daten[daten$Studiengang == "Informatik", ]$Interesse_Progr
+deskr_metr(Interesse_Progr_Informatik)
+# $Mittelwert
+# [1] 6.130435
+# 
+# $Median
+# 50% 
+#   6
 
 
 ### Mathe-LK
