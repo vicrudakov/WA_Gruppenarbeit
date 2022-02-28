@@ -73,6 +73,7 @@ zshg_deskr_kat(Interesse_Mathe_Kat$Kategorisiert, Studiengang)
 # $Korr_Pearson
 # [1] 0.7415369
 
+
 ## Genaue Zahlen anhand von Studiengang
 Interesse_Mathe_Statistik <- daten[daten$Studiengang == "Statistik", ]$Interesse_Mathe
 deskr_metr(Interesse_Mathe_Statistik)
@@ -110,6 +111,7 @@ zshg_deskr_kat(Interesse_Progr_Kat$Kategorisiert, Studiengang)
 # 
 # $Korr_Pearson
 # [1] 0.7061127
+
 
 ## Genaue Zahlen anhand von Studiengang
 Interesse_Progr_Statistik <- daten[daten$Studiengang == "Statistik", ]$Interesse_Progr
