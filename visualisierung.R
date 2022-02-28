@@ -172,3 +172,16 @@ deskr_biv(Interesse_Progr, Mathe_LK)
 # 
 # $korr_pearson_kont
 # [1] 0.3575884
+## Genaue Zahlen anhand von Studiengang
+Mathe_LK_Statistik <- daten[daten$Studiengang == "Statistik", ]$Mathe_LK
+deskr_metr(Mathe_LK_Statistik)
+# $Mittelwert
+# [1] 0.7428571
+Mathe_LK_DS <- daten[daten$Studiengang == "Data Science", ]$Mathe_LK
+deskr_metr(Mathe_LK_DS)
+# $Mittelwert
+# [1] 0.6666667
+Mathe_LK_Informatik <- daten[daten$Studiengang == "Informatik", ]$Mathe_LK
+deskr_metr(Mathe_LK_Informatik)
+# $Mittelwert
+# [1] 0.6086957
